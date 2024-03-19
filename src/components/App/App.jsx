@@ -7,9 +7,11 @@ import { useAuth } from 'hooks'
 import { Loading } from 'components/common/Loading/Loading'
 import Notiflix from 'notiflix'
 
-const Login = lazy(() => import('pages/LoginPage/LoginPage'))
-const ForgotPassword = lazy(() => import('pages/ForgotPasswordPage/ForgotPasswordPage'))
-const ResetPassword = lazy(() => import('pages/ResetPasswordPage/ResetPasswordPage'))
+const HomePage = lazy(() => import('pages/Home/Home'))
+const Login = lazy(() => import('pages/Login/Login'))
+const LoginByAccessId = lazy(() => import('pages/LoginByAccessId/LoginByAccessId'))
+const ForgotPassword = lazy(() => import('pages/ForgotPassword/ForgotPassword'))
+const ResetPassword = lazy(() => import('pages/ResetPassword/ResetPassword'))
 
 const App = () => {
   const dispatch = useDispatch()
@@ -35,12 +37,13 @@ const App = () => {
     <Loading isVisible={true} />
   ) : (
     <Routes>
-      <Route path="/" redirectTo="/login" element={<LayOut />}>
-        <Route index redirectTo="/login" element={<Login />} />
-        <Route path="*" redirectTo="/login" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/" element={<LayOut />}>
+        <Route index element={<HomePage />} />
+        <Route path="*" element={<HomePage />} />
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/login-by-access-id" element={<LoginByAccessId />} />
+        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+        <Route path="/auth/reset-password" element={<ResetPassword />} />
       </Route>
     </Routes>
   )

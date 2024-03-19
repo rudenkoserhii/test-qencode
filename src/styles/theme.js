@@ -1,16 +1,18 @@
 const theme = {
-  space: [0, 2, 4, 8, 14, 15, 16, 20, 25, 30, 32, 48, 64, 128, 192, 400],
+  space: [0, 2, 4, 8, 10, 14, 15, 16, 18, 20, 25, 30, 32, 40, 48, 64, 80, 128, 192, 400],
   colors: {
-    white: "#ffffff",
-    primary: "#3070eb",
-    textSecondary: "#050d1f",
-    black: "#000000",
-    placeholder: "#a1abb5",
-    textPrimary: "#1a1a1a",
-    helpers: "#66707a",
-    lineBrake: "#bfc4cc",
-    icons: "#171714",
-    background: "#dbdbdb",
+    white: '#ffffff',
+    primary: '#3070eb',
+    textTitle: '#1A1919',
+    textSecondary: '#050d1f',
+    black: '#000000',
+    placeholder: '#a1abb5',
+    textPrimary: '#060E1E',
+    helpers: '#66707a',
+    lineBrake: '#E3E6E9',
+    lineText: '#BEC5CC',
+    icons: '#171714',
+    background: '#dbdbdb',
   },
   fontWeights: {
     regular: 400,
@@ -18,16 +20,18 @@ const theme = {
     bold: 700,
   },
   fontSizes: {
-    extraSmall: "12px",
-    small: "14px",
-    medium: "15px",
-    large: "16px",
-    extraLarge: "30px",
+    extraSmall: '12px',
+    small: '14px',
+    medium: '15px',
+    large: '16px',
+    extraLarge: '30px',
   },
   radii: {
-    normal: "6px",
-    medium: "8px",
+    normal: '6px',
+    medium: '8px',
   },
-};
+  animation: { hover: '250ms cubic-bezier(0.4, 0, 0.2, 1)' },
+  border: { button: '1.2px solid #D3D8DC' },
+}
 
-export default theme;
+export default theme

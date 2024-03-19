@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from 'App'
-import reportWebVitals from 'reportWebVitals'
+import App from 'components/App/App'
 import { ThemeProvider } from 'styled-components'
 import theme from 'styles/theme'
 import GlobalStyles from 'styles/GlobalStyle'
@@ -25,5 +24,3 @@ root.render(
     </Provider>
   </React.StrictMode>,
 )
-
-reportWebVitals(console.log)
