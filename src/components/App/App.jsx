@@ -8,6 +8,7 @@ import { Loading } from 'components/common/Loading/Loading'
 import Notiflix from 'notiflix'
 
 const HomePage = lazy(() => import('pages/Home/Home'))
+const SignUp = lazy(() => import('pages/SignUp/SignUp'))
 const Login = lazy(() => import('pages/Login/Login'))
 const LoginByAccessId = lazy(() => import('pages/LoginByAccessId/LoginByAccessId'))
 const ForgotPassword = lazy(() => import('pages/ForgotPassword/ForgotPassword'))
@@ -40,6 +41,7 @@ const App = () => {
       <Route path="/" element={<LayOut />}>
         <Route index element={<HomePage />} />
         <Route path="*" element={<HomePage />} />
+        <Route path="/auth/signup" element={<SignUp />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/login-by-access-id" element={<LoginByAccessId />} />
         <Route path="/auth/forgot-password" element={<ForgotPassword />} />
