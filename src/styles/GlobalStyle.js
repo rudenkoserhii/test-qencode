@@ -46,6 +46,10 @@ body {
     color: ${({ theme }) => theme.colors.textPrimary};
   }
 
+a {
+  text-decoration: none;
+}
+
 .scale-in-center {
 	-webkit-animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;

@@ -1,7 +1,10 @@
 import React from 'react'
 // import authApi from 'api/authApi'
-import { Wrapper, Line } from 'components/LoginForm/LoginForm.styled'
-import { Logo, Socials, Title } from 'components/common'
+import { Wrapper, Line, Helper, Span, LinkStyled } from 'components/LoginForm/LoginForm.styled'
+import { Button, Logo, Socials, Title } from 'components/common'
+import { titles } from 'constants'
+import theme from 'styles/theme'
+import { AppRoute } from 'enums'
 
 function LoginForm() {
   // const [email, setEmail] = useState('')
@@ -22,7 +25,7 @@ function LoginForm() {
   return (
     <Wrapper>
       <Logo />
-      <Title text="Log in to your account" />
+      <Title text={titles.login} />
       <Socials />
       <Line>or</Line>
       {/* <form onSubmit={handleSubmit}>
@@ -40,6 +43,18 @@ function LoginForm() {
         />
         <button type="submit">Login</button>
       </form> */}
+      <Button
+        radius={theme.radii.medium}
+        width="400"
+        text="Log in to Qencode"
+        bg={theme.colors.primary}
+        color={theme.colors.white}
+        onClick={() => console.log('click')}
+      />
+      <Helper>
+        <Span>Is your company new to Qencode?</Span>
+        <LinkStyled to={AppRoute.SIGN_UP_PAGE}>Sign up</LinkStyled>
+      </Helper>
     </Wrapper>
   )
 }

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
@@ -49,4 +50,21 @@ export const Line = styled.p`
 
   @media screen and (min-width: 1280px) {
   }
+`
+export const Helper = styled.p`
+  font-size: ${(props) => props.theme.fontSizes.small};
+  font-weight: ${(props) => props.theme.fontWeights.medium};
+  line-height: 1.423;
+
+  text-align: center;
+
+  margin-top: ${(props) => props.theme.space[9]}px;
+`
+export const Span = styled.span`
+  color: ${(props) => props.theme.colors.textPrimary};
+
+  margin-right: ${(props) => props.theme.space[2]}px;
+`
+export const LinkStyled = styled(Link)`
+  color: ${(props) => props.theme.colors.linkText};
 `

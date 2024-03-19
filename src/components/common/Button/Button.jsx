@@ -5,6 +5,7 @@ import { ButtonStyled, Span, Wrapper } from 'components/common/Button/Button.sty
 export const Button = ({ radius, border, width, text, bg, color, onClick, Icon }) => {
   return (
     <ButtonStyled
+      type="button"
       data-border={border}
       data-width={width}
       data-color={color}

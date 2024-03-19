@@ -11,6 +11,7 @@ const theme = {
     helpers: '#66707a',
     lineBrake: '#E3E6E9',
     lineText: '#BEC5CC',
+    linkText: '#316FEA',
     icons: '#171714',
     background: '#dbdbdb',
   },
