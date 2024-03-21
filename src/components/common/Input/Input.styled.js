@@ -141,6 +141,11 @@ export const InputStyled = styled.input`
 
     transition: ${(props) => props.theme.animation.hover};
   }
+
+  &::-ms-reveal,
+  &::-ms-clear {
+    display: none;
+  }
 `
 export const LabelText = styled.p`
   letter-spacing: -0.24%;
