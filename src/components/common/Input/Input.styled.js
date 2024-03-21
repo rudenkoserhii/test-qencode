@@ -6,10 +6,11 @@ import { ReactComponent as EyeSlash } from 'assets/icons/eye-slash.svg'
 export const Placeholder = styled.div`
   position: absolute;
 
-  top: 50%;
-  left: ${(props) => props.theme.space[6]}px;
+  top: ${(props) => (props['data-move'] ? '-' + props.theme.space[8] + 'px' : '50%')};
+  left: ${(props) => (props['data-move'] ? '0' : props.theme.space[6] + 'px')};
 
-  transform: translateY(-50%);
+  transform: ${(props) =>
+    props['data-move'] ? 'translateY(0) scale(0.8)' : 'translateY(-50%) scale(1)'};
 
   width: auto;
   height: auto;
@@ -25,13 +26,13 @@ export const Placeholder = styled.div`
 `
 export const Span = styled.span`
   position: absolute;
-  bottom: -16px;
+  bottom: -${(props) => props.theme.space[8]}px;
   left: 50%;
 
   transform: translateX(-50%);
 
-  font-size: 10px;
-  color: var(--text-error);
+  font-size: ${(props) => props.theme.fontSizes.extraSmall};
+  color: ${(props) => props.theme.colors.error};
 `
 
 export const IconReset = styled(Reset)`
@@ -129,8 +130,6 @@ export const InputStyled = styled.input`
 
   color: ${(props) => props.theme.colors.textPrimary};
 
-  /* background-color: ${(props) => props.theme.colors.white}; */
-
   transition: ${(props) => props.theme.animation.hover};
 
   &:focus,
@@ -139,14 +138,5 @@ export const InputStyled = styled.input`
     border: ${(props) => props.theme.border.inputFocus};
 
     transition: ${(props) => props.theme.animation.hover};
-
-    & ~ ${Placeholder} {
-      top: -${(props) => props.theme.space[8]}px;
-      left: 0;
-
-      transform: translateY(0) scale(0.8);
-
-      transition: ${(props) => props.theme.animation.hover};
-    }
   }
 `

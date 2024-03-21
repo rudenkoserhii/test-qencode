@@ -1,6 +1,6 @@
-import axios from 'axios'
+import axios from 'helpers/axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-axios.defaults.baseURL = process.env.REACT_APP_BACKEND_HOST
+import { ApiRoute, AppRoute, Notification } from 'enums'
 
 const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`
@@ -10,9 +10,9 @@ const clearAuthHeader = () => {
   axios.defaults.headers.common.Authorization = ''
 }
 
-export const signUp = createAsyncThunk('auth/signup', async (credentials, thunkAPI) => {
+export const signUp = createAsyncThunk(AppRoute.SIGN_UP, async (credentials, thunkAPI) => {
   try {
-    const res = await axios.post('/users/signup', credentials)
+    const res = await axios.post(ApiRoute.SIGN_UP, credentials)
 
     setAuthHeader(res.data.token)
 
@@ -22,38 +22,35 @@ export const signUp = createAsyncThunk('auth/signup', async (credentials, thunkA
   }
 })
 
-export const logIn = createAsyncThunk('auth/logIn', async (credentials, thunkAPI) => {
-  try {
-    const res = await axios.post('/users/login', credentials)
-
-    setAuthHeader(res.data.token)
-
-    return res.data
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.detail)
-  }
-})
-
-export const accessUser = createAsyncThunk(
-  'auth/login-by-access-id',
-  async (accessId, thunkAPI) => {
-    if (accessId === null) {
-      return thunkAPI.rejectWithValue('Unable to verify user')
-    }
-
+export const logIn = createAsyncThunk(
+  AppRoute.LOG_IN_BY_CREDENTIALS,
+  async (credentials, thunkAPI) => {
     try {
-      const res = await axios.get('/auth/access-token', accessId)
+      const res = await axios.post(ApiRoute.LOG_IN_BY_CREDENTIALS, credentials)
+
+      setAuthHeader(res.data.token)
 
       return res.data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.detail)
+      console.log(error)
+      return thunkAPI.rejectWithValue(error.message)
     }
   },
 )
 
-export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+export const accessUser = createAsyncThunk(AppRoute.LOGIN_BY_CODE, async (accessId, thunkAPI) => {
   try {
-    await axios.post('/users/logout')
+    const res = await axios.get(ApiRoute.LOG_IN_BY_CODE, accessId)
+
+    return res.data
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.detail)
+  }
+})
+
+export const logOut = createAsyncThunk(AppRoute.LOG_OUT, async (_, thunkAPI) => {
+  try {
+    await axios.post(ApiRoute.LOG_OUT)
 
     clearAuthHeader()
   } catch (error) {
@@ -61,17 +58,17 @@ export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   }
 })
 
-export const refreshUser = createAsyncThunk('auth/refresh-token', async (_, thunkAPI) => {
+export const refreshUser = createAsyncThunk(AppRoute.REFRESH_TOKEN, async (_, thunkAPI) => {
   const state = thunkAPI.getState()
   const persistedToken = state.auth.token
 
   if (persistedToken === null) {
-    return thunkAPI.rejectWithValue('Unable to refresh user')
+    return thunkAPI.rejectWithValue(Notification.cantRefreshUser)
   }
 
   try {
     setAuthHeader(persistedToken)
-    const res = await axios.get('/auth/refresh-token')
+    const res = await axios.get(ApiRoute.REFRESH_TOKEN)
 
     return res.data
   } catch (error) {
@@ -79,13 +76,13 @@ export const refreshUser = createAsyncThunk('auth/refresh-token', async (_, thun
   }
 })
 
-export const passwordReset = createAsyncThunk('auth/password-reset', async (data, thunkAPI) => {
+export const passwordReset = createAsyncThunk(AppRoute.RESET_PASSWORD, async (data, thunkAPI) => {
   if (data === null) {
-    return thunkAPI.rejectWithValue('Unable to reset the password')
+    return thunkAPI.rejectWithValue(Notification.cantResetPassword)
   }
 
   try {
-    const res = await axios.get('/auth/password-reset', data)
+    const res = await axios.get(ApiRoute.RESET_PASSWORD, data)
 
     clearAuthHeader()
 
@@ -95,13 +92,13 @@ export const passwordReset = createAsyncThunk('auth/password-reset', async (data
   }
 })
 
-export const passwordSet = createAsyncThunk('auth/password-set', async (data, thunkAPI) => {
+export const passwordSet = createAsyncThunk(AppRoute.RESTORE_PASSWORD, async (data, thunkAPI) => {
   if (data === null) {
-    return thunkAPI.rejectWithValue('Unable to set the password')
+    return thunkAPI.rejectWithValue(Notification.cantUpdatePassword)
   }
 
   try {
-    const res = await axios.get('/auth/password-set', data)
+    const res = await axios.get(ApiRoute.RESTORE_PASSWORD, data)
 
     return res.data
   } catch (error) {

@@ -1,47 +1,71 @@
 import React, { useState } from 'react'
-// import authApi from 'api/authApi'
 import { Wrapper, Line, Helper, Span, LinkStyled } from 'components/LoginForm/LoginForm.styled'
 import { Button, Input, Logo, Socials, Title } from 'components/common'
 import { titles } from 'constants'
 import theme from 'styles/theme'
 import { AppRoute } from 'enums'
 import { patterns } from 'constants'
+import { useDispatch, useSelector } from 'react-redux'
+import { Loading } from 'components/common'
+import { selectIsLoading } from 'store/auth/selectors'
+import { logIn } from 'store/auth/operations'
+import Notiflix from 'notiflix'
+import { messages } from 'constants'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [resetEmail, setResetEmail] = useState(false)
   const [resetPassword, setResetPassword] = useState(false)
-
-  // const [resetValues, ]
   const [messageEmail, setMessageEmail] = useState(false)
   const [messagePassword, setMessagePassword] = useState(false)
 
-  const handleSubmit = async () => {
-    console.log('click')
-    if (!isValidEmail(email)) {
-      console.log('we')
-      setMessageEmail(true)
-    } else if (!isValidPassword(password)) {
-      console.log('wp')
+  const dispatch = useDispatch()
+  const isLoadingWithLogIn = useSelector(selectIsLoading)
 
+  const resetInputs = () => {
+    setEmail('')
+    setPassword('')
+    setResetEmail(false)
+    setResetPassword(false)
+  }
+
+  const handleSubmit = async () => {
+    if (!isValidEmail(email)) {
+      setMessageEmail(true)
+
+      return
+    } else if (!isValidPassword(password)) {
       setMessagePassword(true)
-    } else {
-      console.log('Submit search - ', { email, password })
-      setEmail('')
-      setPassword('')
-      setResetEmail(false)
-      setResetPassword(false)
+
+      return
     }
 
     try {
-      // const userData = await authApi.login(email, password)
-      // console.log('Login successful:', userData)
-      // // Handle successful login (e.g., update state, redirect user)
+      const response = await dispatch(
+        logIn({
+          email,
+          password,
+        }),
+      )
+      if (response.error) {
+        Notiflix.Notify.failure(`Something went wrong - ${response.payload}!`)
+
+        return
+      }
     } catch (error) {
-      // console.error('Login failed:', error.message)
-      // Handle login failure (e.g., display error message)
+      Notiflix.Notify.failure(`Something went wrong - ${error.message}`)
     }
+
+    Notiflix.Notify.init({
+      success: {
+        background: 'blue',
+      },
+    })
+
+    Notiflix.Notify.success('Successfull logining')
+
+    resetInputs()
   }
 
   const isValidEmail = (email) => {
@@ -62,7 +86,7 @@ function LoginForm() {
         type="email"
         placeholder="Work email"
         mb="25px"
-        validateMessage={'wrong email'}
+        validateMessage={messages.requiredEmail}
         setValue={(value) => setEmail(value)}
         value={email}
         setReset={(value) => setResetEmail(value)}
@@ -74,7 +98,7 @@ function LoginForm() {
         type="password"
         placeholder="Password"
         mb="15px"
-        validateMessage={'wrong password'}
+        validateMessage={messages.requiredPassword}
         setValue={(value) => setPassword(value)}
         value={password}
         setReset={(value) => setResetPassword(value)}
@@ -82,7 +106,7 @@ function LoginForm() {
         setMessage={(value) => setMessagePassword(value)}
         message={messagePassword}
       />
-      <LinkStyled data-mb="30px" to={AppRoute.RESTORE_PASSWORD_PAGE}>
+      <LinkStyled data-mb="30px" to={AppRoute.RESTORE_PASSWORD}>
         Forgot your password?
       </LinkStyled>
       <Button
@@ -95,10 +119,11 @@ function LoginForm() {
       />
       <Helper>
         <Span>Is your company new to Qencode?</Span>
-        <LinkStyled to={AppRoute.SIGN_UP_PAGE} data-mb="0px">
+        <LinkStyled to={AppRoute.SIGN_UP} data-mb="0px">
           Sign up
         </LinkStyled>
       </Helper>
+      <Loading isVisible={isLoadingWithLogIn} />
     </Wrapper>
   )
 }

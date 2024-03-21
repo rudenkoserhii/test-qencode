@@ -26,6 +26,7 @@ export const Input = ({
   setMessage,
 }) => {
   const [isShownPassword, setIsShownPassword] = useState(false)
+  const [move, setMove] = useState(false)
 
   const inputId = nanoid()
 
@@ -48,6 +49,7 @@ export const Input = ({
   }
 
   const handleFocus = () => {
+    setMove(true)
     if (value.length > 0) {
       setReset(true)
     }
@@ -57,18 +59,27 @@ export const Input = ({
     setMessage(false)
     setValue('')
     setReset(false)
+    setMove(false)
+  }
+
+  const handleBlur = () => {
+    if (value.length === 0) {
+      setMove(false)
+    }
   }
 
   return (
     <LabelStyled htmlFor={inputId} data-mb={mb}>
       <InputStyled
+        autoComplete="one-time-code"
         id={inputId}
         type={inputType()}
         value={value}
         onChange={handleChange}
         onFocus={handleFocus}
+        onBlur={handleBlur}
       />
-      {value.length === 0 && <Placeholder>{placeholder}</Placeholder>}
+      <Placeholder data-move={move}>{placeholder}</Placeholder>
 
       {type === 'password' && (
         <ButtonPassword type="button" onClick={() => setIsShownPassword(!isShownPassword)}>

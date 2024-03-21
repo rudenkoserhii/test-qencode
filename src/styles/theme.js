@@ -15,6 +15,7 @@ const theme = {
     icons: '#171714',
     background: '#dbdbdb',
     eye: '#67717B',
+    error: '#9E0000',
   },
   fontWeights: {
     regular: 400,

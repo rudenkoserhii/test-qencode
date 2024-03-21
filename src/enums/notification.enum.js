@@ -1,6 +1,12 @@
 const Notification = {
-  UserAddedToChat: 'user_added_to_chat',
-  UserRemovedFromChat: 'user_removed_from_chat',
-};
+  successfullySignUped: '',
+  successfullyLogIned: '',
+  successfullyLogOuted: '',
+  rejectedWithError: '',
+  catchError: '',
+  cantRefreshUser: 'Unable to refresh user',
+  cantUpdatePassword: 'Unable to set the password',
+  cantResetPassword: 'Unable to reset the password',
+}
 
-export { Notification };
+export { Notification }

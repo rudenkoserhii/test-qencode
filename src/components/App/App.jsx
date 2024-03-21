@@ -6,6 +6,7 @@ import { refreshUser } from 'store/auth/operations'
 import { useAuth } from 'hooks'
 import { Loading } from 'components/common/Loading/Loading'
 import Notiflix from 'notiflix'
+import { AppRoute } from 'enums'
 
 const HomePage = lazy(() => import('pages/Home/Home'))
 const SignUp = lazy(() => import('pages/SignUp/SignUp'))
@@ -34,18 +35,28 @@ const App = () => {
     })()
   }, [dispatch, token])
 
+  const {
+    HOME,
+    RANDOM,
+    SIGN_UP,
+    LOG_IN_BY_CREDENTIALS,
+    LOGIN_BY_CODE,
+    RESTORE_PASSWORD,
+    RESET_PASSWORD,
+  } = AppRoute
+
   return isRefreshing ? (
     <Loading isVisible={true} />
   ) : (
     <Routes>
-      <Route path="/" element={<LayOut />}>
+      <Route path={HOME} element={<LayOut />}>
         <Route index element={<HomePage />} />
-        <Route path="*" element={<HomePage />} />
-        <Route path="/auth/signup" element={<SignUp />} />
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/login-by-access-id" element={<LoginByAccessId />} />
-        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-        <Route path="/auth/reset-password" element={<ResetPassword />} />
+        <Route path={RANDOM} element={<HomePage />} />
+        <Route path={SIGN_UP} element={<SignUp />} />
+        <Route path={LOG_IN_BY_CREDENTIALS} element={<Login />} />
+        <Route path={LOGIN_BY_CODE} element={<LoginByAccessId />} />
+        <Route path={RESTORE_PASSWORD} element={<ForgotPassword />} />
+        <Route path={RESET_PASSWORD} element={<ResetPassword />} />
       </Route>
     </Routes>
   )
