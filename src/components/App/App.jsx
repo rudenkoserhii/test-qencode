@@ -18,13 +18,13 @@ const ResetPassword = lazy(() => import('pages/ResetPassword/ResetPassword'))
 
 const App = () => {
   const dispatch = useDispatch()
-  const { isRefreshing, accessToken } = useAuth()
+  const { isRefreshing, accessTokenExpire, refreshTokenExpire } = useAuth()
 
   useEffect(() => {
-    ;(() => {
-      if (accessToken) {
+    ;(async () => {
+      if (accessTokenExpire > Date.now() || refreshTokenExpire > Date.now()) {
         try {
-          const response = dispatch(refreshUser())
+          const response = await dispatch(refreshUser())
           if (response.meta.requestStatus === 'rejected') {
             Notiflix.Notify.failure(`${Notification.rejectedWithError} - ${response.payload}!`)
             return
@@ -34,7 +34,7 @@ const App = () => {
         }
       }
     })()
-  }, [dispatch, accessToken])
+  }, [accessTokenExpire, dispatch, refreshTokenExpire])
 
   const {
     HOME,
