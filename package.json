@@ -2,6 +2,7 @@
   "name": "test-qencode",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://template-auth.netlify.app/",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.6.7",
