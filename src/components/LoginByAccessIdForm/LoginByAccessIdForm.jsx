@@ -4,7 +4,7 @@ import { Wrapper, Line, Helper, Span, LinkStyled } from 'components/LoginForm/Lo
 import { Button, Input, Logo, Socials, Title } from 'components/common'
 import { titles } from 'constants'
 import theme from 'styles/theme'
-import { AppRoute } from 'enums'
+import { AppRoute, Notification } from 'enums'
 import { patterns } from 'constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { Loading } from 'components/common'
@@ -37,12 +37,12 @@ function LoginByAccessIdForm() {
     try {
       const response = await dispatch(accessUser({ access_id: code }))
       if (response.error) {
-        Notiflix.Notify.failure(`Something went wrong - ${response.payload}!`)
+        Notiflix.Notify.failure(`${Notification.rejectedWithError} - ${response.payload}!`)
 
         return
       }
     } catch (error) {
-      Notiflix.Notify.failure(`Something went wrong - ${error.message}`)
+      Notiflix.Notify.failure(`${Notification.catchError} - ${error.message}`)
     }
 
     Notiflix.Notify.init({
@@ -51,7 +51,7 @@ function LoginByAccessIdForm() {
       },
     })
 
-    Notiflix.Notify.success('Successfull logining')
+    Notiflix.Notify.success(Notification.successfullyLogIned)
     navigate(AppRoute.SUCCESS)
 
     resetInputs()

@@ -4,7 +4,7 @@ import { Wrapper } from 'components/LoginForm/LoginForm.styled'
 import { Button, Input, Logo, Title } from 'components/common'
 import { titles } from 'constants'
 import theme from 'styles/theme'
-import { AppRoute } from 'enums'
+import { AppRoute, Notification } from 'enums'
 import { patterns } from 'constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { Loading } from 'components/common'
@@ -33,12 +33,12 @@ function SetPasswordForm() {
   }
 
   const handleSubmit = async () => {
-    if (!isValidPasswordSecond(passwordSecond)) {
-      setMessagePasswordSecond(true)
+    if (!isValidPasswordFirst(passwordFirst)) {
+      setMessagePasswordFirst(true)
 
       return
-    } else if (!isValidPasswordFirst(passwordFirst)) {
-      setMessagePasswordFirst(true)
+    } else if (!isValidPasswordSecond(passwordSecond)) {
+      setMessagePasswordSecond(true)
 
       return
     }
@@ -69,7 +69,7 @@ function SetPasswordForm() {
   }
 
   const isValidPasswordSecond = (passwordSecond) => {
-    return patterns.email.test(passwordSecond)
+    return passwordFirst === passwordSecond
   }
 
   const isValidPasswordFirst = (passwordFirst) => {
@@ -83,7 +83,7 @@ function SetPasswordForm() {
       <Input
         type="password"
         placeholder="Password"
-        mb="15px"
+        mb="25px"
         label="Password"
         validateMessage={messages.requiredPassword}
         setValue={(value) => setPasswordFirst(value)}
@@ -96,7 +96,7 @@ function SetPasswordForm() {
       <Input
         type="password"
         placeholder="Password"
-        mb="15px"
+        mb="30px"
         label="Confirm password"
         validateMessage={messages.requiredPassword}
         setValue={(value) => setPasswordSecond(value)}
