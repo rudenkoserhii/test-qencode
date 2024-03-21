@@ -35,6 +35,7 @@ const theme = {
   },
   animation: { hover: '250ms cubic-bezier(0.4, 0, 0.2, 1)' },
   border: { button: '1.2px solid #D3D8DC', inputFocus: '1px solid #3070eb' },
+  filter: { hover: 'invert(15%)' },
 }
 
 export default theme

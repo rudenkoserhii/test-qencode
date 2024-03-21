@@ -6,7 +6,7 @@ import { ReactComponent as EyeSlash } from 'assets/icons/eye-slash.svg'
 export const Placeholder = styled.div`
   position: absolute;
 
-  top: ${(props) => (props['data-move'] ? '-' + props.theme.space[8] + 'px' : '50%')};
+  top: ${(props) => (props['data-move'] ? '-' + props.theme.space[4] + 'px' : '50%')};
   left: ${(props) => (props['data-move'] ? '0' : props.theme.space[6] + 'px')};
 
   transform: ${(props) =>
@@ -14,7 +14,7 @@ export const Placeholder = styled.div`
 
   width: auto;
   height: auto;
-  padding: ${(props) => props.theme.space[3]}px;
+  padding: ${(props) => (props['data-move'] ? '0 ' + props.theme.space[2] + 'px' : '0')};
 
   font-size: ${(props) => props.theme.fontSizes.medium};
   font-weight: ${(props) => props.theme.fontWeights.regular};
@@ -139,4 +139,15 @@ export const InputStyled = styled.input`
 
     transition: ${(props) => props.theme.animation.hover};
   }
+`
+export const LabelText = styled.p`
+  letter-spacing: -0.24%;
+  font-size: ${(props) => props.theme.fontSizes.medium};
+  font-weight: ${(props) => props.theme.fontWeights.medium};
+  color: ${(props) => props.theme.colors.textPrimary};
+  line-height: 1.4;
+  text-align: left;
+
+  width: 100%;
+  margin-bottom: ${(props) => props.theme.space[3]}px;
 `

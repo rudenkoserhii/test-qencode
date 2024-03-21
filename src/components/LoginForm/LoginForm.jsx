@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Wrapper, Line, Helper, Span, LinkStyled } from 'components/LoginForm/LoginForm.styled'
 import { Button, Input, Logo, Socials, Title } from 'components/common'
 import { titles } from 'constants'
 import theme from 'styles/theme'
-import { AppRoute } from 'enums'
+import { AppRoute, Notification } from 'enums'
 import { patterns } from 'constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { Loading } from 'components/common'
@@ -22,6 +23,7 @@ function LoginForm() {
 
   const dispatch = useDispatch()
   const isLoadingWithLogIn = useSelector(selectIsLoading)
+  const navigate = useNavigate()
 
   const resetInputs = () => {
     setEmail('')
@@ -49,21 +51,22 @@ function LoginForm() {
         }),
       )
       if (response.error) {
-        Notiflix.Notify.failure(`Something went wrong - ${response.payload}!`)
+        Notiflix.Notify.failure(`${Notification.rejectedWithError} - ${response.payload}!`)
 
         return
       }
     } catch (error) {
-      Notiflix.Notify.failure(`Something went wrong - ${error.message}`)
+      Notiflix.Notify.failure(`${Notification.catchError} - ${error.message}`)
     }
 
     Notiflix.Notify.init({
       success: {
-        background: 'blue',
+        background: theme.colors.linkText,
       },
     })
 
-    Notiflix.Notify.success('Successfull logining')
+    Notiflix.Notify.success(Notification.successfullyLogIned)
+    navigate(AppRoute.SUCCESS)
 
     resetInputs()
   }
@@ -106,7 +109,7 @@ function LoginForm() {
         setMessage={(value) => setMessagePassword(value)}
         message={messagePassword}
       />
-      <LinkStyled data-mb="30px" to={AppRoute.RESTORE_PASSWORD}>
+      <LinkStyled data-mb="30px" to={AppRoute.RESET_PASSWORD}>
         Forgot your password?
       </LinkStyled>
       <Button

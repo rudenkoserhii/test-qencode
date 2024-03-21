@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Wrapper } from 'components/LoginForm/LoginForm.styled'
-import { Button, Input, Logo, Title } from 'components/common'
+import { Wrapper, Line } from 'components/LoginForm/LoginForm.styled'
+import { Button, Input, Logo, Socials, Title } from 'components/common'
 import { titles } from 'constants'
 import theme from 'styles/theme'
 import { AppRoute } from 'enums'
@@ -9,14 +9,17 @@ import { patterns } from 'constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { Loading } from 'components/common'
 import { selectIsLoading } from 'store/auth/selectors'
-import { passwordReset } from 'store/auth/operations'
+import { logIn } from 'store/auth/operations'
 import Notiflix from 'notiflix'
 import { messages } from 'constants'
 
-function ResetPasswordForm() {
+function SignUpForm() {
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [resetEmail, setResetEmail] = useState(false)
+  const [resetPassword, setResetPassword] = useState(false)
   const [messageEmail, setMessageEmail] = useState(false)
+  const [messagePassword, setMessagePassword] = useState(false)
 
   const dispatch = useDispatch()
   const isLoadingWithLogIn = useSelector(selectIsLoading)
@@ -24,20 +27,27 @@ function ResetPasswordForm() {
 
   const resetInputs = () => {
     setEmail('')
+    setPassword('')
     setResetEmail(false)
+    setResetPassword(false)
   }
 
-  const handleSubmitSend = async () => {
+  const handleSubmit = async () => {
     if (!isValidEmail(email)) {
       setMessageEmail(true)
+
+      return
+    } else if (!isValidPassword(password)) {
+      setMessagePassword(true)
 
       return
     }
 
     try {
       const response = await dispatch(
-        passwordReset({
+        logIn({
           email,
+          password,
         }),
       )
       if (response.error) {
@@ -55,8 +65,8 @@ function ResetPasswordForm() {
       },
     })
 
-    Notiflix.Notify.success(Notification.successfullyReset)
-    navigate(AppRoute.RESTORE_PASSWORD)
+    Notiflix.Notify.success(Notification.successfullySignUped)
+    navigate(AppRoute.SUCCESS)
 
     resetInputs()
   }
@@ -65,19 +75,19 @@ function ResetPasswordForm() {
     return patterns.email.test(email)
   }
 
-  const handleSubmitCancel = () => {
-    resetInputs()
-
-    navigate(AppRoute.HOME)
+  const isValidPassword = (password) => {
+    return patterns.password.test(password)
   }
 
   return (
     <Wrapper>
       <Logo />
-      <Title text={titles.resetPassword} />
+      <Title text={titles.signup} />
+      <Socials />
+      <Line>or</Line>
       <Input
         type="email"
-        placeholder="Enter your email"
+        placeholder="Your email"
         mb="25px"
         validateMessage={messages.requiredEmail}
         setValue={(value) => setEmail(value)}
@@ -87,28 +97,29 @@ function ResetPasswordForm() {
         setMessage={(value) => setMessageEmail(value)}
         message={messageEmail}
       />
-      <Button
-        radius={theme.radii.medium}
-        width="400"
-        text="Send"
+      <Input
+        type="password"
+        placeholder="Password"
         mb="25px"
-        bg={theme.colors.primary}
-        color={theme.colors.white}
-        border={theme.border.button}
-        onClick={handleSubmitSend}
+        validateMessage={messages.requiredPassword}
+        setValue={(value) => setPassword(value)}
+        value={password}
+        setReset={(value) => setResetPassword(value)}
+        reset={resetPassword}
+        setMessage={(value) => setMessagePassword(value)}
+        message={messagePassword}
       />
       <Button
         radius={theme.radii.medium}
         width="400"
-        text="Cancel"
-        bg={theme.colors.white}
-        color={theme.colors.textPrimary}
-        border={theme.border.button}
-        onClick={handleSubmitCancel}
+        text="Sign up to Qencode"
+        bg={theme.colors.primary}
+        color={theme.colors.white}
+        onClick={handleSubmit}
       />
       <Loading isVisible={isLoadingWithLogIn} />
     </Wrapper>
   )
 }
 
-export default ResetPasswordForm
+export default SignUpForm

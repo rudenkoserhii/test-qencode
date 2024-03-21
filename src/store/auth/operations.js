@@ -18,7 +18,7 @@ export const signUp = createAsyncThunk(AppRoute.SIGN_UP, async (credentials, thu
 
     return res.data
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.detail)
+    return thunkAPI.rejectWithValue(error.message)
   }
 })
 
@@ -40,11 +40,11 @@ export const logIn = createAsyncThunk(
 
 export const accessUser = createAsyncThunk(AppRoute.LOGIN_BY_CODE, async (accessId, thunkAPI) => {
   try {
-    const res = await axios.get(ApiRoute.LOG_IN_BY_CODE, accessId)
+    const res = await axios.post(ApiRoute.LOG_IN_BY_CODE, accessId)
 
     return res.data
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.detail)
+    return thunkAPI.rejectWithValue(error.message)
   }
 })
 
@@ -54,25 +54,25 @@ export const logOut = createAsyncThunk(AppRoute.LOG_OUT, async (_, thunkAPI) => 
 
     clearAuthHeader()
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.detail)
+    return thunkAPI.rejectWithValue(error.message)
   }
 })
 
 export const refreshUser = createAsyncThunk(AppRoute.REFRESH_TOKEN, async (_, thunkAPI) => {
   const state = thunkAPI.getState()
-  const persistedToken = state.auth.token
+  const accessToken = state.auth.accessToken
 
-  if (persistedToken === null) {
+  if (accessToken === null) {
     return thunkAPI.rejectWithValue(Notification.cantRefreshUser)
   }
 
   try {
-    setAuthHeader(persistedToken)
-    const res = await axios.get(ApiRoute.REFRESH_TOKEN)
+    setAuthHeader(accessToken)
+    const res = await axios.post(ApiRoute.REFRESH_TOKEN)
 
     return res.data
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.detail)
+    return thunkAPI.rejectWithValue(error.message)
   }
 })
 
@@ -82,26 +82,34 @@ export const passwordReset = createAsyncThunk(AppRoute.RESET_PASSWORD, async (da
   }
 
   try {
-    const res = await axios.get(ApiRoute.RESET_PASSWORD, data)
+    const res = await axios.post(ApiRoute.RESET_PASSWORD, data)
 
     clearAuthHeader()
 
     return res.data
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.detail)
+    return thunkAPI.rejectWithValue(error.message)
   }
 })
 
 export const passwordSet = createAsyncThunk(AppRoute.RESTORE_PASSWORD, async (data, thunkAPI) => {
-  if (data === null) {
+  const state = thunkAPI.getState()
+  const accessToken = state.auth.accessToken
+  const secret = state.auth.refreshToken
+
+  if (!data || !accessToken || !secret) {
     return thunkAPI.rejectWithValue(Notification.cantUpdatePassword)
   }
 
   try {
-    const res = await axios.get(ApiRoute.RESTORE_PASSWORD, data)
+    const res = await axios.post(ApiRoute.RESTORE_PASSWORD, {
+      ...data,
+      accessToken,
+      secret,
+    })
 
     return res.data
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.detail)
+    return thunkAPI.rejectWithValue(error.message)
   }
 })

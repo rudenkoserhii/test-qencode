@@ -12,7 +12,7 @@ const HomePage = lazy(() => import('pages/Home/Home'))
 const SignUp = lazy(() => import('pages/SignUp/SignUp'))
 const Login = lazy(() => import('pages/Login/Login'))
 const LoginByAccessId = lazy(() => import('pages/LoginByAccessId/LoginByAccessId'))
-const ForgotPassword = lazy(() => import('pages/ForgotPassword/ForgotPassword'))
+const SetPassword = lazy(() => import('pages/SetPassword/SetPassword'))
 const ResetPassword = lazy(() => import('pages/ResetPassword/ResetPassword'))
 
 const App = () => {
@@ -55,7 +55,7 @@ const App = () => {
         <Route path={SIGN_UP} element={<SignUp />} />
         <Route path={LOG_IN_BY_CREDENTIALS} element={<Login />} />
         <Route path={LOGIN_BY_CODE} element={<LoginByAccessId />} />
-        <Route path={RESTORE_PASSWORD} element={<ForgotPassword />} />
+        <Route path={RESTORE_PASSWORD} element={<SetPassword />} />
         <Route path={RESET_PASSWORD} element={<ResetPassword />} />
       </Route>
     </Routes>
