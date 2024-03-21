@@ -4,4 +4,5 @@ export const titles = {
   loginByCode: 'Log in to with code',
   restorePassword: 'Create new Password?',
   ResetPassword: 'Forgot Password?',
+  success: 'You are successfully authenticated!',
 }

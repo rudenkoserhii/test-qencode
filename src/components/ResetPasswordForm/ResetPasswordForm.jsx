@@ -49,12 +49,6 @@ function ResetPasswordForm() {
       Notiflix.Notify.failure(`${Notification.catchError} - ${error.message}`)
     }
 
-    Notiflix.Notify.init({
-      success: {
-        background: theme.colors.linkText,
-      },
-    })
-
     Notiflix.Notify.success(Notification.successfullyReset)
     navigate(AppRoute.RESTORE_PASSWORD)
 

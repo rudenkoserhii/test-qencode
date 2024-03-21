@@ -59,12 +59,6 @@ function LoginForm() {
       Notiflix.Notify.failure(`${Notification.catchError} - ${error.message}`)
     }
 
-    Notiflix.Notify.init({
-      success: {
-        background: theme.colors.linkText,
-      },
-    })
-
     Notiflix.Notify.success(Notification.successfullyLogIned)
     navigate(AppRoute.SUCCESS)
 
