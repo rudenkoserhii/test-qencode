@@ -9,47 +9,33 @@ import { patterns } from 'constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { Loading } from 'components/common'
 import { selectIsLoading } from 'store/auth/selectors'
-import { logIn } from 'store/auth/operations'
 import Notiflix from 'notiflix'
 import { messages } from 'constants'
+import { accessUser } from 'store/auth/operations'
 
-function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [resetEmail, setResetEmail] = useState(false)
-  const [resetPassword, setResetPassword] = useState(false)
-  const [messageEmail, setMessageEmail] = useState(false)
-  const [messagePassword, setMessagePassword] = useState(false)
+function LoginByAccessIdForm() {
+  const [code, setCode] = useState('')
+  const [reset, setReset] = useState(false)
+  const [message, setMessage] = useState(false)
 
   const dispatch = useDispatch()
   const isLoadingWithLogIn = useSelector(selectIsLoading)
   const navigate = useNavigate()
 
   const resetInputs = () => {
-    setEmail('')
-    setPassword('')
-    setResetEmail(false)
-    setResetPassword(false)
+    setCode('')
+    setReset(false)
   }
 
   const handleSubmit = async () => {
-    if (!isValidEmail(email)) {
-      setMessageEmail(true)
-
-      return
-    } else if (!isValidPassword(password)) {
-      setMessagePassword(true)
+    if (!isValidCode(code)) {
+      setMessage(true)
 
       return
     }
 
     try {
-      const response = await dispatch(
-        logIn({
-          email,
-          password,
-        }),
-      )
+      const response = await dispatch(accessUser({ access_id: code }))
       if (response.error) {
         Notiflix.Notify.failure(`${Notification.rejectedWithError} - ${response.payload}!`)
 
@@ -71,47 +57,28 @@ function LoginForm() {
     resetInputs()
   }
 
-  const isValidEmail = (email) => {
-    return patterns.email.test(email)
-  }
-
-  const isValidPassword = (password) => {
-    return patterns.password.test(password)
+  const isValidCode = (code) => {
+    return patterns.code.test(code)
   }
 
   return (
     <Wrapper>
       <Logo />
-      <Title text={titles.login} />
+      <Title text={titles.loginByCode} />
       <Socials />
       <Line>or</Line>
       <Input
-        type="email"
-        placeholder="Work email"
-        mb="25px"
-        validateMessage={messages.requiredEmail}
-        setValue={(value) => setEmail(value)}
-        value={email}
-        setReset={(value) => setResetEmail(value)}
-        reset={resetEmail}
-        setMessage={(value) => setMessageEmail(value)}
-        message={messageEmail}
+        type="code"
+        placeholder="Enter code"
+        mb="30px"
+        validateMessage={messages.requiredCode}
+        setValue={(value) => setCode(value)}
+        value={code}
+        setReset={(value) => setReset(value)}
+        reset={reset}
+        setMessage={(value) => setMessage(value)}
+        message={message}
       />
-      <Input
-        type="password"
-        placeholder="Password"
-        mb="15px"
-        validateMessage={messages.requiredPassword}
-        setValue={(value) => setPassword(value)}
-        value={password}
-        setReset={(value) => setResetPassword(value)}
-        reset={resetPassword}
-        setMessage={(value) => setMessagePassword(value)}
-        message={messagePassword}
-      />
-      <LinkStyled data-mb="30px" to={AppRoute.RESET_PASSWORD}>
-        Forgot your password?
-      </LinkStyled>
       <Button
         radius={theme.radii.medium}
         width="400"
@@ -131,4 +98,4 @@ function LoginForm() {
   )
 }
 
-export default LoginForm
+export default LoginByAccessIdForm

@@ -13,6 +13,7 @@ export const ButtonStyled = styled.button`
   height: ${(props) => props.theme.space[14]}px;
   border: ${(props) => props['data-border'] || 'none'};
   border-radius: ${(props) => props['data-radius']};
+  margin-bottom: ${(props) => props['data-mb'] || 'auto'};
 
   background-color: ${(props) => props['data-bg']};
   color: ${(props) => props['data-color']};
@@ -23,7 +24,7 @@ export const ButtonStyled = styled.button`
 
   &:hover,
   &:focus {
-    opacity: 0.8;
+    filter: ${(props) => props.theme.filter.hover};
 
     transition: ${(props) => props.theme.animation.hover};
   }

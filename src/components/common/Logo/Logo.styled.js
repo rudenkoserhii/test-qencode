@@ -12,7 +12,7 @@ export const LogoStyled = styled(Logo)`
 
   &:hover,
   &:focus {
-    opacity: 0.8;
+    filter: ${(props) => props.theme.filter.hover};
 
     transition: ${(props) => props.theme.animation.hover};
   }

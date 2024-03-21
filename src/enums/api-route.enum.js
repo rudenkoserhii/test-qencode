@@ -1,10 +1,11 @@
 const ApiRoute = {
-  SEND_CODE_FOR_RESTORE_PASSWORD: '/email/forgot-password',
-  CONFIRM_CODE_FOR_RESTORE_PASSWORD: '/auth/confirm-email',
-  CONFIRM_RESTORE_PASSWORD: '/auth/restore-password',
-  ADD_VERIFICATION_DATA: '/verification/update',
-  UPDATE_PROFILE_DATA: '/user/update',
-  UPDATE_NOTIFICATIONS_STATUS: '/user/update-notifications',
+  SIGN_UP: '/auth/signup',
+  LOG_IN_BY_CREDENTIALS: '/auth/login',
+  LOG_IN_BY_CODE: '/auth/access-token',
+  LOG_OUT: '/auth/logout',
+  REFRESH_TOKEN: '/auth/refresh-token',
+  RESTORE_PASSWORD: '/auth/password-set',
+  RESET_PASSWORD: '/auth/password-reset',
 }
 
 export { ApiRoute }

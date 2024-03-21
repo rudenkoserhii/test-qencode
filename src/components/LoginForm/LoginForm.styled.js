@@ -75,4 +75,13 @@ export const LinkStyled = styled(Link)`
   margin-bottom: ${(props) => props['data-mb']};
 
   color: ${(props) => props.theme.colors.linkText};
+
+  transition: ${(props) => props.theme.animation.hover};
+
+  &:hover,
+  &:focus {
+    filter: ${(props) => props.theme.filter.hover};
+
+    transition: ${(props) => props.theme.animation.hover};
+  }
 `
