@@ -14,6 +14,7 @@ const theme = {
     linkText: '#316FEA',
     icons: '#171714',
     background: '#dbdbdb',
+    eye: '#67717B',
   },
   fontWeights: {
     regular: 400,
@@ -32,7 +33,7 @@ const theme = {
     medium: '8px',
   },
   animation: { hover: '250ms cubic-bezier(0.4, 0, 0.2, 1)' },
-  border: { button: '1.2px solid #D3D8DC' },
+  border: { button: '1.2px solid #D3D8DC', inputFocus: '1px solid #3070eb' },
 }
 
 export default theme

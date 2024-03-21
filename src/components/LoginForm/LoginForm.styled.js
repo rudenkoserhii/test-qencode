@@ -66,5 +66,13 @@ export const Span = styled.span`
   margin-right: ${(props) => props.theme.space[2]}px;
 `
 export const LinkStyled = styled(Link)`
+  font-size: ${(props) => props.theme.fontSizes.small};
+  font-weight: ${(props) => props.theme.fontWeights.medium};
+  line-height: 1.423;
+  text-align: right;
+
+  width: 100%;
+  margin-bottom: ${(props) => props['data-mb']};
+
   color: ${(props) => props.theme.colors.linkText};
 `
