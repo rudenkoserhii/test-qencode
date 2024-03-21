@@ -1,6 +1,6 @@
-import React, { useEffect, lazy } from 'react'
+import React, { useEffect, lazy, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { LayOut } from 'components/LayOut/LayOut'
 import { refreshUser } from 'store/auth/operations'
 import { useAuth } from 'hooks'
@@ -10,6 +10,7 @@ import { AppRoute, Notification } from 'enums'
 
 const Home = lazy(() => import('pages/Home/Home'))
 const LogIned = lazy(() => import('pages/LogIned/LogIned'))
+const OAuth = lazy(() => import('pages/OAuth/OAuth'))
 const SignUp = lazy(() => import('pages/SignUp/SignUp'))
 const Login = lazy(() => import('pages/Login/Login'))
 const LoginByAccessId = lazy(() => import('pages/LoginByAccessId/LoginByAccessId'))
@@ -17,8 +18,43 @@ const SetPassword = lazy(() => import('pages/SetPassword/SetPassword'))
 const ResetPassword = lazy(() => import('pages/ResetPassword/ResetPassword'))
 
 const App = () => {
+  const [authCode, setAuthCode] = useState('')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { isRefreshing, accessTokenExpire, refreshTokenExpire } = useAuth()
+  const {
+    HOME,
+    RANDOM,
+    SUCCESS,
+    OAUTH,
+    SIGN_UP,
+    LOG_IN_BY_CREDENTIALS,
+    LOGIN_BY_CODE,
+    RESTORE_PASSWORD,
+    RESET_PASSWORD,
+  } = AppRoute
+
+  useEffect(() => {
+    const receiveMessage = (event) => {
+      if (event.origin !== window.origin) return
+
+      if (event.data.code) {
+        setAuthCode(event.data.code)
+      }
+    }
+
+    window.addEventListener('message', receiveMessage)
+
+    return () => {
+      window.removeEventListener('message', receiveMessage)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (authCode) {
+      navigate(SUCCESS)
+    }
+  }, [SUCCESS, authCode, navigate])
 
   useEffect(() => {
     ;(async () => {
@@ -36,17 +72,6 @@ const App = () => {
     })()
   }, [accessTokenExpire, dispatch, refreshTokenExpire])
 
-  const {
-    HOME,
-    RANDOM,
-    SUCCESS,
-    SIGN_UP,
-    LOG_IN_BY_CREDENTIALS,
-    LOGIN_BY_CODE,
-    RESTORE_PASSWORD,
-    RESET_PASSWORD,
-  } = AppRoute
-
   return isRefreshing ? (
     <Loading isVisible={true} />
   ) : (
@@ -55,6 +80,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path={RANDOM} element={<Home />} />
         <Route path={SUCCESS} element={<LogIned />} />
+        <Route path={OAUTH} element={<OAuth />} />
         <Route path={SIGN_UP} element={<SignUp />} />
         <Route path={LOG_IN_BY_CREDENTIALS} element={<Login />} />
         <Route path={LOGIN_BY_CODE} element={<LoginByAccessId />} />

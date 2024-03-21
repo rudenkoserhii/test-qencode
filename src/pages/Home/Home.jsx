@@ -4,6 +4,7 @@ import { Section } from 'components/LayOut/LayOut.styled'
 import { Wrapper } from 'pages/Home/Home.styled'
 import { Button, Logo } from 'components/common'
 import theme from 'styles/theme'
+import GitHubOAuth from 'GitHubOAuth'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -35,6 +36,7 @@ const Home = () => {
           color={theme.colors.white}
           onClick={() => navigate('/auth/login-by-access-id')}
         />
+        <GitHubOAuth />
       </Wrapper>
     </Section>
   )
