@@ -33,6 +33,8 @@ export const Span = styled.span`
 
   font-size: ${(props) => props.theme.fontSizes.extraSmall};
   color: ${(props) => props.theme.colors.error};
+
+  white-space: nowrap;
 `
 
 export const IconReset = styled(Reset)`

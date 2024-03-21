@@ -79,7 +79,7 @@ function SetPasswordForm() {
         placeholder="Password"
         mb="25px"
         label="Password"
-        validateMessage={messages.requiredPassword}
+        validateMessage={messages.notValidPassword}
         setValue={(value) => setPasswordFirst(value)}
         value={passwordFirst}
         setReset={(value) => setResetPasswordFirst(value)}
@@ -92,7 +92,7 @@ function SetPasswordForm() {
         placeholder="Password"
         mb="30px"
         label="Confirm password"
-        validateMessage={messages.requiredPassword}
+        validateMessage={messages.passwordNotMatched}
         setValue={(value) => setPasswordSecond(value)}
         value={passwordSecond}
         setReset={(value) => setResetPasswordSecond(value)}
