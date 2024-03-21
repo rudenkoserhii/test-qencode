@@ -10,7 +10,7 @@ import { Wrapper } from 'pages/LogIned/LogIned.styled'
 import { logOut } from 'store/auth/operations'
 import theme from 'styles/theme'
 
-const Home = () => {
+const LogIned = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -57,4 +57,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default LogIned
