@@ -1,20 +1,29 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Section } from 'components/LayOut/LayOut.styled'
-import { Wrapper } from 'pages/LogIned/LogIned.styled'
-import { Button, Logo, Title } from 'components/common'
-import theme from 'styles/theme'
-import { AppRoute, Notification } from 'enums'
-import { titles } from 'constants'
 import { useDispatch } from 'react-redux'
-import { logOut } from 'store/auth/operations'
+import { useNavigate } from 'react-router-dom'
+import * as ls from 'local-storage'
 import Notiflix from 'notiflix'
+import { Button, Logo, Title } from 'components/common'
+import { Section } from 'components/LayOut/LayOut.styled'
+import { titles } from 'constants'
+import { AppRoute, Notification } from 'enums'
+import { Wrapper } from 'pages/LogIned/LogIned.styled'
+import { logOut } from 'store/auth/operations'
+import theme from 'styles/theme'
 
-const Home = () => {
+const LogIned = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const handleClick = async () => {
+    const socials = ls.get('oauth-response')
+    if (socials) {
+      navigate(AppRoute.HOME)
+      ls.remove('oauth-response')
+
+      return
+    }
+
     try {
       const response = await dispatch(logOut())
       if (response.error) {
@@ -57,4 +66,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default LogIned

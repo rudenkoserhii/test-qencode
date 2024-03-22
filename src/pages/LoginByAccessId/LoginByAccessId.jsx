@@ -1,6 +1,6 @@
 import React from 'react'
-import LoginByAccessIdForm from 'components/LoginByAccessIdForm/LoginByAccessIdForm'
 import { Section } from 'components/LayOut/LayOut.styled'
+import LoginByAccessIdForm from 'components/LoginByAccessIdForm/LoginByAccessIdForm'
 
 const LoginByAccessId = () => (
   <Section className="scale-in-center">
