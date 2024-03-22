@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import * as ls from 'local-storage'
 import Notiflix from 'notiflix'
 import { Button, Logo, Title } from 'components/common'
 import { Section } from 'components/LayOut/LayOut.styled'
@@ -15,6 +16,14 @@ const LogIned = () => {
   const dispatch = useDispatch()
 
   const handleClick = async () => {
+    const socials = ls.get('oauth-response')
+    if (socials) {
+      navigate(AppRoute.HOME)
+      ls.remove('oauth-response')
+
+      return
+    }
+
     try {
       const response = await dispatch(logOut())
       if (response.error) {

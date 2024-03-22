@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react'
 import { Wrapper } from 'components/common/Socials/Socials.styled'
 import { Button } from 'components/common'
 import theme from 'styles/theme'
@@ -10,23 +9,16 @@ import * as ls from 'local-storage'
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_CLIENT_GOOGLE_ID || ''
 const GITHUB_CLIENT_ID = process.env.REACT_APP_CLIENT_GITHUB_ID || ''
 const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI || 'http://localhost:3000/oauth'
-const MAX_OPEN_POPUP = 30000
-
-const scopeAsParam = (scopes) => {
-  return scopes.reduce((rev, curr) => `${rev}+${curr}`)
-}
+const MAX_OPEN_POPUP = 60000
 
 export const Socials = () => {
-  const [googleCode, setGoogleCode] = useState('')
-  const [githubCode, setGithubCode] = useState('')
+  const scopeAsParam = (scopes) => {
+    return scopes.reduce((rev, curr) => `${rev}+${curr}`)
+  }
 
-  const navigate = useNavigate()
-
-  const hasAnyToken = !!githubCode || !!googleCode
-
-  console.log(hasAnyToken)
   const openDialog = (url) => {
-    const popup = window.open(url, '', 'width=700, height=700,fullscreen=no')
+    const popup = window.open(url, '', 'width=700, height=700, fullscreen=no')
+
     let openDuration = 0
 
     const promise = new Promise((resolve, reject) => {
@@ -41,7 +33,6 @@ export const Socials = () => {
           }
 
           clearInterval(checking)
-          ls.remove('oauth-response')
         }
 
         if (openDuration >= MAX_OPEN_POPUP) {
@@ -58,14 +49,10 @@ export const Socials = () => {
       }, 1000)
     })
 
-    window.onbeforeunload = () => {
-      console.log('onbefore')
-      navigate('/success')
-    }
     return promise
   }
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     const state = JSON.stringify({
       vendor: 'google',
     })
@@ -86,17 +73,10 @@ export const Socials = () => {
     dialogUrlParam.append('client_id', GOOGLE_CLIENT_ID)
     const url = decodeURIComponent(dialogUrl.toString())
 
-    openDialog(url)
-      .then((response) => {
-        console.log(response)
-        setGoogleCode(response.success?.code || '')
-      })
-      .catch(() => {
-        setGoogleCode('')
-      })
+    await openDialog(url)
   }
 
-  const handleGitHubLogin = () => {
+  const handleGitHubLogin = async () => {
     const state = JSON.stringify({
       vendor: 'github',
     })
@@ -112,14 +92,7 @@ export const Socials = () => {
     dialogUrlParam.append('scope', scopeAsParam(scopes))
     const url = decodeURIComponent(dialogUrl.toString())
 
-    openDialog(url)
-      .then((response) => {
-        console.log(response)
-        setGithubCode(response.success?.code || '')
-      })
-      .catch(() => {
-        setGithubCode('')
-      })
+    await openDialog(url)
   }
 
   return (

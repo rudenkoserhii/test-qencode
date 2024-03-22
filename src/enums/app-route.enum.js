@@ -2,6 +2,7 @@ const AppRoute = {
   HOME: '/',
   RANDOM: '*',
   SUCCESS: '/success',
+  OAUTH: '/oauth',
   SIGN_UP: '/auth/signup',
   LOG_IN_BY_CREDENTIALS: '/auth/login',
   LOG_OUT: '/auth/logout',

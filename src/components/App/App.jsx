@@ -1,6 +1,6 @@
 import React, { useEffect, lazy, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import { LayOut } from 'components/LayOut/LayOut'
 import { refreshUser } from 'store/auth/operations'
 import { useAuth } from 'hooks'
@@ -20,7 +20,7 @@ const ResetPassword = lazy(() => import('pages/ResetPassword/ResetPassword'))
 const App = () => {
   const [authCode, setAuthCode] = useState('')
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { pathname } = useLocation()
   const { isRefreshing, accessTokenExpire, refreshTokenExpire } = useAuth()
   const {
     HOME,
@@ -51,10 +51,10 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if (authCode) {
-      navigate(SUCCESS)
+    if (authCode && authCode !== '' && pathname !== SUCCESS) {
+      window.location.href = SUCCESS
     }
-  }, [SUCCESS, authCode, navigate])
+  }, [SUCCESS, authCode, pathname])
 
   useEffect(() => {
     ;(async () => {

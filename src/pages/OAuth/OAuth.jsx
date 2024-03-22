@@ -12,7 +12,6 @@ const OAuth = () => {
     const response = {
       vendor,
     }
-
     if (code) {
       const successResponse = {
         ...response,
@@ -22,6 +21,7 @@ const OAuth = () => {
       }
 
       ls.set('oauth-response', successResponse)
+
       window.opener.postMessage({ code }, window.origin)
       window.close()
       return
@@ -32,6 +32,7 @@ const OAuth = () => {
       isError: true,
     }
     ls.set('oauth-response', responseError)
+
     window.close()
   }, [searchParams])
 
